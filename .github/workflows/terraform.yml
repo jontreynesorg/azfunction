@@ -127,5 +127,5 @@ jobs:
         TF_ACTION_WORKING_DIR: ./terraform  
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
-        terraform apply azfunc.tfplan -auto-approve
+        terraform apply azfunc.tfplan
       
