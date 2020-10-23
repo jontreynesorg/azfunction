@@ -63,6 +63,7 @@ jobs:
       STATE_STORAGE:  ${{secrets.STORAGE_ACCOUNT_NAME}}
       STATE_CONTAINER:  ${{secrets.CONTAINER_NAME}}
       STATE_FILE:  ${{secrets.KEY}}
+      TF_ACTION_WORKING_DIR: ./terraform  
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
