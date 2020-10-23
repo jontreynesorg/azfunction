@@ -125,12 +125,13 @@ jobs:
     - name: Terraform Apply
       env:
         TF_ACTION_WORKING_DIR: ./terraform  
-#       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
         terraform apply \
           -var="subscription_id=$ARM_SUBSCRIPTION_ID" \
           -var="tenant_id=$ARM_TENANT_ID" \
           -var="client_id=$ARM_CLIENT_ID" \
           -var="client_secret=$ARM_CLIENT_SECRET" \
-          -auto-approve
+          -auto-approve \
+          azfunc.tfplan
       
