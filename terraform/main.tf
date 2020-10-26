@@ -13,7 +13,7 @@ resource "random_string" "storage_name" {
 
 
 resource "azurerm_storage_account" "this" {
-  name                     = concat(var.storage_account_name, random_string.storage_name)
+  name                     = format("%s/%s", var.storage_account_name, random_string.storage_name)
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
