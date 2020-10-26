@@ -14,7 +14,7 @@ variable "virtual_network_name" {
   description = "The name of the virtual network in which to create the App Services."
 }
 
-variable "azurerm_subnet" {
+variable "subnet_name" {
   type        = string
   description = "The name of the subnet in which to create the App Services."
 }
