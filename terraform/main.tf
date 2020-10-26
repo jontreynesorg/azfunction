@@ -28,7 +28,6 @@ resource "azurerm_storage_container" "deployments" {
 #     source = var.functionapp
 # }
 # -----------------------------------------------------------------------------
-
 resource "azurerm_virtual_network" "this" {
   name                = "example-virtual-network"
   address_space       = ["10.0.0.0/16"]
