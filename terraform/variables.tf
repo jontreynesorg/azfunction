@@ -15,8 +15,8 @@ variable "storage_account_name" {
 }
 
 variable "functionapp" {
-    type = "string"
-    default = "../build/functionapp.zip"
+  type    = "string"
+  default = "../build/functionapp.zip"
 }
 
 
