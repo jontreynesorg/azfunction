@@ -2,7 +2,7 @@ resource_group_name  = "kvapp"
 location             = "eastus"
 storage_account_name = "joreynestest123"
 virtual_network_name = "myvnet"
-subnet_name = "appservice"
+subnet_name          = "appservice"
 
 app_service_plans = {
   asp1 = {
@@ -43,7 +43,7 @@ function_apps = {
 vnet_swift_connection = {
   connection1 = {
     app_service_key = "asp1"
-    subnet_name      = "appservice" 
+    subnet_name     = "appservice"
   }
 }
 

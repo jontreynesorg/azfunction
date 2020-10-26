@@ -246,5 +246,5 @@ resource "azurerm_app_service_virtual_network_swift_connection" "this" {
   for_each       = var.vnet_swift_connection
   app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
   # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
-  subnet_id      = azurerm_subnet.this.id
+  subnet_id = azurerm_subnet.this.id
 }
