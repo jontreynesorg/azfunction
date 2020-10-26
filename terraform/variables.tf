@@ -126,6 +126,16 @@ variable "function_apps" {
   default     = {}
 }
 
+variable "vnet_swift_connection" {
+  type = map(object({
+    function_app_key = string
+    subnet_name      = string
+    vnet_name        = string
+  }))
+  description = "Map of Azure Function Virtual Network Association objects"
+  default     = {}
+}
+
 variable "application_insights_name" {
   type        = string
   description = "Specifies the Application Insights Name to collect application monitoring data"
