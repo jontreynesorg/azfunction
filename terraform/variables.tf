@@ -128,9 +128,9 @@ variable "function_apps" {
 
 variable "vnet_swift_connection" {
   type = map(object({
-    app_service_plan_key = string
-    subnet_name          = string
-    vnet_name            = string
+    function_app_key = string
+    subnet_name      = string
+    vnet_name        = string
   }))
   description = "Map of Azure Function Virtual Network Association objects"
   default     = {}
