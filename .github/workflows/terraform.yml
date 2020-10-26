@@ -6,9 +6,9 @@ on:
     - main
     - users/*
   pull_request:
-  workflow_dispatch:
-      tags:
-        description: 'Test scenario tags'
+    branches:
+      - main
+  workflow_dispatch
 
 jobs:
   terraform:
