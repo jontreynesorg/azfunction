@@ -140,8 +140,7 @@ resource "azurerm_function_app" "this" {
   # storage_account_access_key = local.storage_state_exists == true ? lookup(data.terraform_remote_state.storage.outputs.primary_access_keys_map, each.value["storage_account_name"]) : lookup(data.azurerm_storage_account.this, each.key)["primary_access_key"]
 
   # app_settings            = each.value.enable_monitoring == true ? merge(local.application_insights_settings, lookup(each.value, "app_settings", {})) : lookup(each.value, "app_settings", {})
-  app_settings = merge(local.app_settings_dynamic, lookup(each.value, "app_settings", {}))
-  # app_settings            = lookup(each.value, "app_settings", {})
+  app_settings            = lookup(each.value, "app_settings", {})
   enabled                 = coalesce(each.value.enabled, true)
   os_type                 = lookup(each.value, "os_type", null)
   version                 = lookup(each.value, "version", null)
