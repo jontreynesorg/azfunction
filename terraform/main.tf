@@ -29,14 +29,14 @@ resource "azurerm_storage_container" "deployments" {
 # }
 # -----------------------------------------------------------------------------
 resource "azurerm_virtual_network" "this" {
-  name                = "example-virtual-network"
+  name                = var.virtual_network_name
   address_space       = ["10.0.0.0/16"]
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 }
 
 resource "azurerm_subnet" "this" {
-  name                 = "example-subnet"
+  name                 = var.subnet_name
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -59,8 +59,6 @@ data "azurerm_storage_account" "this" {
 
 }
 
-
-
 # data "azurerm_application_insights" "this" {
 #   count               = (local.appinsights_state_exists == false && var.application_insights_name != null) ? 1 : 0
 #   name                = var.application_insights_name
@@ -73,8 +71,16 @@ data "azurerm_storage_account" "this" {
 #   storage_state_exists       = length(values(data.terraform_remote_state.storage.outputs)) == 0 ? false : true
 #   appinsights_state_exists   = length(values(data.terraform_remote_state.applicationinsights.outputs)) == 0 ? false : true
 
-#   application_insights_seetings = {
+#   application_insights_settings = {
 #     "APPINSIGHTS_INSTRUMENTATIONKEY" = var.application_insights_name != null ? (local.appinsights_state_exists == true ? lookup(data.terraform_remote_state.applicationinsights.outputs.instrumentation_key_map, var.application_insights_name, null) : data.azurerm_application_insights.this.0.instrumentation_key) : null
+#   }
+# }
+
+# if using msi, these can be set via a post action https://github.com/marketplace/actions/azure-functions-action
+# locals {
+#   app_settings_dynamic = {
+#     HASH                     = base64encode(filesha256(var.functionapp))
+#     WEBSITE_RUN_FROM_PACKAGE = format("https://%s.blob.core.windows.net/%s/%s%s", azurerm_storage_account.this.name, azurerm_storage_container.deployments.name, azurerm_storage_blob.appcode.name, data.azurerm_storage_account_sas.this.sas)
 #   }
 # }
 
@@ -133,8 +139,9 @@ resource "azurerm_function_app" "this" {
   storage_account_access_key = azurerm_storage_account.this.primary_access_key
   # storage_account_access_key = local.storage_state_exists == true ? lookup(data.terraform_remote_state.storage.outputs.primary_access_keys_map, each.value["storage_account_name"]) : lookup(data.azurerm_storage_account.this, each.key)["primary_access_key"]
 
-  # app_settings            = each.value.enable_monitoring == true ? merge(local.application_insights_seetings, lookup(each.value, "app_settings", {})) : lookup(each.value, "app_settings", {})
-  app_settings            = lookup(each.value, "app_settings", {})
+  # app_settings            = each.value.enable_monitoring == true ? merge(local.application_insights_settings, lookup(each.value, "app_settings", {})) : lookup(each.value, "app_settings", {})
+  app_settings = merge(local.app_settings_dynamic, lookup(each.value, "app_settings", {}))
+  # app_settings            = lookup(each.value, "app_settings", {})
   enabled                 = coalesce(each.value.enabled, true)
   os_type                 = lookup(each.value, "os_type", null)
   version                 = lookup(each.value, "version", null)
@@ -229,4 +236,15 @@ resource "azurerm_function_app" "this" {
 
   # tags = local.tags
   tags = var.function_app_additional_tags
+}
+
+
+# - 
+# - Manage Azure Function Virtual Network Association 
+# -
+resource "azurerm_app_service_virtual_network_swift_connection" "this" {
+  for_each       = var.vnet_swift_connection
+  app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
+  # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
+  subnet_id      = azurerm_subnet.this.id
 }

@@ -1,6 +1,21 @@
-resource_group_name  = "joreynestest"
+resource_group_name  = "kvapp"
 location             = "eastus"
 storage_account_name = "joreynestest123"
+virtual_network_name = "myvnet"
+subnet_name = "appservice"
+
+app_service_plans = {
+  asp1 = {
+    name                         = "jstart-functionapp"
+    kind                         = "FunctionApp"
+    reserved                     = false
+    per_site_scaling             = null
+    maximum_elastic_worker_count = 20
+    sku_tier                     = "ElasticPremium"
+    sku_size                     = "EP1"
+    sku_capacity                 = 3
+  }
+}
 
 function_apps = {
   fa1 = {
@@ -25,16 +40,10 @@ function_apps = {
   }
 }
 
-app_service_plans = {
-  asp1 = {
-    name                         = "jstart-functionapp"
-    kind                         = "FunctionApp"
-    reserved                     = false
-    per_site_scaling             = null
-    maximum_elastic_worker_count = 20
-    sku_tier                     = "ElasticPremium"
-    sku_size                     = "EP1"
-    sku_capacity                 = 3
+vnet_swift_connection = {
+  connection1 = {
+    app_service_key = "asp1"
+    subnet_name      = "appservice" 
   }
 }
 
