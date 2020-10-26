@@ -3,17 +3,8 @@ resource "azurerm_resource_group" "this" {
   location = var.location
 }
 
-resource "random_string" "storage_name" {
-  length  = 5
-  upper   = false
-  lower   = true
-  number  = true
-  special = false
-}
-
-
 resource "azurerm_storage_account" "this" {
-  name                     = format("%s%s", var.storage_account_name, random_string.storage_name.result)
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
