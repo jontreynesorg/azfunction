@@ -1,16 +1,16 @@
 name: 'Terraform'
 
 on:
-  # push:
-  #   branches:
-  #   - main
-  #   - users/*
-  # pull_request:
-  #   branches:
-  #     - main
-  workflow_dispatch:
-      tags:
-        description: 'Test scenario tags'
+  push:
+    branches:
+    - main
+    - users/*
+  pull_request:
+    branches:
+      - main
+  # workflow_dispatch:
+  #     tags:
+  #       description: 'Test scenario tags'
 
 jobs:
   terraform:
