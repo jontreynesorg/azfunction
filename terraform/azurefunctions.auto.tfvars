@@ -42,8 +42,9 @@ function_apps = {
 
 vnet_swift_connection = {
   connection1 = {
-    app_service_key = "asp1"
-    subnet_name     = "appservice"
+    function_app_key = "asp1"
+    subnet_name      = "appservice"
+    vnet_name        = "myvnet"
   }
 }
 
