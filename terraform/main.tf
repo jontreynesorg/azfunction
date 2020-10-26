@@ -4,16 +4,16 @@ resource "azurerm_resource_group" "this" {
 }
 
 resource "random_string" "storage_name" {
-  length  = 5
-  upper   = false
-  lower   = true
-  number  = true
-  special = false
+    length = 5
+    upper = false
+    lower = true
+    number = true
+    special = false
 }
 
 
 resource "azurerm_storage_account" "this" {
-  name                     = concat(var.storage_account_name, random_string.storage_name)
+  name                     = concat(var.storage_account_name,random_string.storage_name)
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
@@ -24,18 +24,18 @@ resource "azurerm_storage_account" "this" {
 # - Server Package
 # -
 resource "azurerm_storage_container" "deployments" {
-  name                  = "function-releases"
-  storage_account_name  = azurerm_storage_account.storage.name
-  container_access_type = "private"
+    name = "function-releases"
+    storage_account_name = azurerm_storage_account.this.name
+    container_access_type = "private"
 }
 
-resource "azurerm_storage_blob" "appcode" {
-  name                   = "functionapp.zip"
-  storage_account_name   = azurerm_storage_account.this.name
-  storage_container_name = azurerm_storage_container.deployments.name
-  type                   = "block"
-  source                 = var.functionapp
-}
+# resource "azurerm_storage_blob" "appcode" {
+#     name = "functionapp.zip"
+#     storage_account_name = azurerm_storage_account.this.name
+#     storage_container_name = azurerm_storage_container.deployments.name
+#     type = "block"
+#     source = var.functionapp
+# }
 # -----------------------------------------------------------------------------
 
 resource "azurerm_virtual_network" "this" {
