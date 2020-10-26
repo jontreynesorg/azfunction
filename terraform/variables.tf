@@ -14,6 +14,11 @@ variable "storage_account_name" {
   description = "The name of the storage account the App Service will use."
 }
 
+variable "functionapp" {
+    type = "string"
+    default = "../build/functionapp.zip"
+}
+
 
 variable "function_app_additional_tags" {
   type        = map(string)
