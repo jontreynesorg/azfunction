@@ -9,6 +9,16 @@ variable "location" {
   description = "The location of the resources"
 }
 
+variable "virtual_network_name" {
+  type        = string
+  description = "The name of the virtual network in which to create the App Services."
+}
+
+variable "azurerm_subnet" {
+  type        = string
+  description = "The name of the subnet in which to create the App Services."
+}
+
 variable "storage_account_name" {
   type        = string
   description = "The name of the storage account the App Service will use."
