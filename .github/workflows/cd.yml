@@ -1,15 +1,16 @@
 name: 'continuous_deployment'
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   pull_request:
     types: [closed]
     branches:
       - main
 jobs:
   terraform:
+    if: github.event.pull_request.merged
     name: 'Terraform'
     runs-on: ubuntu-latest
     env:
@@ -77,11 +78,13 @@ jobs:
     - name: Terraform Apply
       env:
         TF_ACTION_WORKING_DIR: ./terraform  
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
         terraform apply azfunc.tfplan
 
   deploy:
+    if: github.event.pull_request.merged
+    # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     name: 'Deploy'
     needs: terraform
     runs-on: ubuntu-latest
