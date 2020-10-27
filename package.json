@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "@vercel/ncc": "^0.24.1",
     "azure-msi-keyvault": "^0.1.1"
   },
   "devDependencies": {

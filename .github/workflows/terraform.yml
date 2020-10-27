@@ -158,5 +158,3 @@ jobs:
         # slot-name: # optional
         # Publish profile (*.publishsettings) file contents with web deploy secrets
         # publish-profile: # optional
-
-# https://github.com/actions/download-artifact/blob/main/.github/workflows/test.yml
