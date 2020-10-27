@@ -10,6 +10,7 @@ on:
       - main
 jobs:
   terraform:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     name: 'Terraform'
     runs-on: ubuntu-latest
     env:
@@ -82,6 +83,7 @@ jobs:
         terraform apply azfunc.tfplan
 
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     name: 'Deploy'
     needs: terraform
     runs-on: ubuntu-latest
