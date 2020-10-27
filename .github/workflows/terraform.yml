@@ -106,11 +106,11 @@ jobs:
         branch: main     #optional
         status: success  # optional
 
-    - name: Download artifact NPM package
-      uses: actions/download-artifact@v2
-      with:
-        name: node-package
-        path: ./build/dist
+    # - name: Download artifact NPM package
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: node-package
+    #     path: ./build/dist
 
     - name: Download artifact NPM package
       uses: dawidd6/action-download-artifact@v2
