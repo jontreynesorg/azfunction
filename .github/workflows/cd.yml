@@ -1,17 +1,11 @@
-name: 'Terraform'
+name: 'continuous_deployment'
 
 on:
-  push:
-    branches:
-    - main
-    - users/*
+on:
   pull_request:
+    types: [closed]
     branches:
       - main
-  # workflow_dispatch:
-  #     tags:
-  #       description: 'Test scenario tags'
-
 jobs:
   terraform:
     name: 'Terraform'
