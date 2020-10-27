@@ -3,8 +3,11 @@ name: 'continuous_integration'
 on:
   push:
     branches:
-    - master
+    - main
+    - users/*
   pull_request:
+    branches:
+      - main
 
 jobs:
   test:
