@@ -45,7 +45,7 @@ resource "azurerm_subnet" "this" {
     name = var.subnet_name
 
     service_delegation {
-      name = "Microsoft.Web/serverfarms"
+      name = "Microsoft.Web/serverFarms"
     }
   }
 }
