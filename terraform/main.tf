@@ -84,15 +84,12 @@ data "azurerm_storage_account" "this" {
 #   }
 # }
 
-# -
-# - Core Az Function App Resources
-# -
-data "azurerm_app_service_plan" "this" {
-  for_each            = var.existing_app_service_plans
-  name                = each.value["name"]
-  resource_group_name = azurerm_resource_group.this.name
-  # resource_group_name = lookup(each.value, "resource_group_name", local.resourcegroup_state_exists == true ? var.resource_group_name : data.azurerm_resource_group.this.0.name)
-}
+# resource "azurerm_app_service" "this" {
+#   name                = "example-app-service"
+#   location            = azurerm_resource_group.this.location
+#   resource_group_name = azurerm_resource_group.this.name
+#   app_service_plan_id = azurerm_app_service_plan.example.id
+# }
 
 # -
 # - App Service Plan
@@ -242,8 +239,9 @@ resource "azurerm_function_app" "this" {
 # - Manage Azure Function Virtual Network Association 
 # -
 resource "azurerm_app_service_virtual_network_swift_connection" "this" {
-  for_each       = var.vnet_swift_connection
-  app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
+  for_each = var.vnet_swift_connection
+  # app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
+  app_service_id = "/subscriptions/d8656ecf-9955-40f8-9561-adc129f66e3c/resourceGroups/kvapp/providers/Microsoft.Web/serverfarms/jstart-functionapp"
   # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
   subnet_id = azurerm_subnet.this.id
 }
