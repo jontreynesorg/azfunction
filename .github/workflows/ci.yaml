@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - main
-    - users/*
+    - users/**
   pull_request:
     branches:
       - main
@@ -52,4 +52,3 @@ jobs:
       with:
         name: node-package
         path: ./dist
-
