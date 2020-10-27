@@ -103,20 +103,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Set Node.js 12.x
-    #   uses: actions/setup-node@v1
-    #   with:
-    #     node-version: 12.x
+    - name: Set Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-    # - name: Install
-    #   run: npm clean-install
+    - name: Install
+      run: npm clean-install
     
-    # - name: Verify
-    #   if: runner.os == 'Linux'
-    #   run: |
-    #     npm run build
-    #     # Fail if "npm run build" generated new changes in dist
-    #     git update-index --refresh dist/* && git diff-index --quiet HEAD dist
+    - name: Verify
+      if: runner.os == 'Linux'
+      run: |
+        npm run build
+        # Fail if "npm run build" generated new changes in dist
+        git update-index --refresh dist/* && git diff-index --quiet HEAD dist
 
     # - name: Test
     #   run: npm test
@@ -131,13 +131,13 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: node-package
-        path: ./dummy/dummy.txt
+        path: ./dist
 
     - name: Download artifact NPM package
       uses: actions/download-artifact@v2
       with:
         name: node-package
-        path: .
+        path: ./build/node
         
     - name: Display structure of downloaded files
       run: ls -R
@@ -154,8 +154,7 @@ jobs:
         # Name of the Azure Function App
         app-name: mykvapp1027
         # Path to package or folder. *.zip or a folder to deploy
-        # package: # optional, default is .
-        # Function app slot to be deploy to
+        package: ./build
         # slot-name: # optional
         # Publish profile (*.publishsettings) file contents with web deploy secrets
         # publish-profile: # optional

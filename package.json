@@ -1,0 +1,31 @@
+{
+  "name": "azfunction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "azure-msi-keyvault": "^0.1.1"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0"
+  },
+  "scripts": {
+    "build": "ncc build main.js -o dist",
+    "start": "node main.js",
+    "lint": "echo \"Error: no lint specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format-check": "echo \"Error: no format-check specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jontreynesorg/azfunction.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jontreynesorg/azfunction/issues"
+  },
+  "homepage": "https://github.com/jontreynesorg/azfunction#readme"
+}
