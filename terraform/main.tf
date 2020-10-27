@@ -84,13 +84,13 @@ data "azurerm_storage_account" "this" {
 #   }
 # }
 
-resource "azurerm_app_service" "this" {
-  for_each            = var.app_service_plans
-  name                = "example-app-service"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
-}
+# resource "azurerm_app_service" "this" {
+#   for_each            = var.app_service_plans
+#   name                = "example-app-service"
+#   location            = azurerm_resource_group.this.location
+#   resource_group_name = azurerm_resource_group.this.name
+#   app_service_plan_id = azurerm_app_service_plan.example.id
+# }
 
 # -
 # - App Service Plan
