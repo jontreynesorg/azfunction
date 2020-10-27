@@ -93,15 +93,24 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Validate Build Artifact
-      uses: xembly/validate-workflow-status@v1
+    # - name: Validate Build Artifact
+    #   uses: xembly/validate-workflow-status@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     workflow: continuous_integration
+    #     branch: main     #optional
+    #     status: success  # optional
+
+    - name: Wait for Continuous Integration to Succeed
+      uses: fountainhead/action-wait-for-check@v1.0.0
+      id: wait-for-build
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        workflow: continuous_integration
-        branch: main     #optional
-        status: success  # optional
+        checkName: 'Test (ubuntu-latest)'
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
     - name: Download artifact NPM package
+      if: steps.wait-for-build.outputs.conclusion == 'success'
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
@@ -111,15 +120,18 @@ jobs:
         path: ./build/dist
 
     - name: Display structure of downloaded files
+      if: steps.wait-for-build.outputs.conclusion == 'success'
       run: ls -R
       working-directory: ./build/dist
 
     - name: Login via Azure CLI
+      if: steps.wait-for-build.outputs.conclusion == 'success'
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURERM_SPN }}
 
     - name: Azure Functions Action
+      if: steps.wait-for-build.outputs.conclusion == 'success'
       uses: Azure/functions-action@v1.1.5
       with:
         # Name of the Azure Function App
