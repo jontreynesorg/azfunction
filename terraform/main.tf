@@ -40,6 +40,14 @@ resource "azurerm_subnet" "this" {
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = ["10.0.1.0/24"]
+
+  delegation {
+    name = var.subnet_name
+
+    service_delegation {
+      name = "Microsoft.Web/serverfarms"
+    }
+  }
 }
 
 # TODO keeping data references in case the resources need to be managed
@@ -239,10 +247,10 @@ resource "azurerm_function_app" "this" {
 # - 
 # - Manage Azure Function Virtual Network Association 
 # -
-# resource "azurerm_app_service_virtual_network_swift_connection" "this" {
-#   for_each       = var.vnet_swift_connection
-#   app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
-#   # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
-#   subnet_id = azurerm_subnet.this.id
-# }
+resource "azurerm_app_service_virtual_network_swift_connection" "this" {
+  for_each       = var.vnet_swift_connection
+  app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
+  # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
+  subnet_id = azurerm_subnet.this.id
+}
 # keep getting ^ error creating/updating App Service VNet association between "joreynes094382" (Resource Group "kvapp") and Virtual Network "myvnet": web.AppsClient#CreateOrUpdateSwiftVirtualNetworkConnection: Failure responding to request: StatusCode=500 -- Original Error: autorest/azure: Service returned an error. Status=500 Code="" Message="An error has occurred."
