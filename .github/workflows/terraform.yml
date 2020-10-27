@@ -115,7 +115,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         npm run build
-        # Fail if "npm run build" generated new changes in dist
+        echo "Fail if npm run build generated new changes in dist"
         git update-index --refresh dist/* && git diff-index --quiet HEAD dist
 
     # - name: Test
