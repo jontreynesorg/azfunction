@@ -152,7 +152,7 @@ jobs:
       uses: Azure/functions-action@v1.1.5
       with:
         # Name of the Azure Function App
-        app-name: joreynes094382
+        app-name: mykvapp1027
         # Path to package or folder. *.zip or a folder to deploy
         # package: # optional, default is .
         # Function app slot to be deploy to
