@@ -89,6 +89,7 @@ jobs:
 
   deploy:
     name: 'Deploy'
+    needs: terraform
     runs-on: ubuntu-latest
     env:
       APP_WORKING_DIRECTORY: ./  
