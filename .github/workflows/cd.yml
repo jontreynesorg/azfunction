@@ -2,6 +2,9 @@ name: 'continuous_deployment'
 
 on:
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types: [closed]
     branches:
@@ -72,8 +75,6 @@ jobs:
           -var="tenant_id=$ARM_TENANT_ID" \
           -var="client_id=$ARM_CLIENT_ID" \
           -var="client_secret=$ARM_CLIENT_SECRET" 
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       env:
         TF_ACTION_WORKING_DIR: ./terraform  
@@ -95,16 +96,10 @@ jobs:
     - name: Validate Build Artifact
       uses: xembly/validate-workflow-status@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Github Actions, you do not need to create your own token
+        token: ${{ secrets.GITHUB_TOKEN }}
         workflow: continuous_integration
         branch: main     #optional
         status: success  # optional
-
-    # - name: Download artifact NPM package
-    #   uses: actions/download-artifact@v2
-    #   with:
-    #     name: node-package
-    #     path: ./build/dist
 
     - name: Download artifact NPM package
       uses: dawidd6/action-download-artifact@v2
@@ -133,6 +128,5 @@ jobs:
         package: ./build
         # slot-name: # optional
         # Publish profile (*.publishsettings) file contents with web deploy secrets
-        # publish-profile: # optional
 
         
