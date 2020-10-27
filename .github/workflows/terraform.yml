@@ -87,30 +87,76 @@ jobs:
       run: |
         terraform apply azfunc.tfplan
 
-  # deploy:
-  #   name: 'Terraform'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     APP_WORKING_DIRECTORY: ./  
+  deploy:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    env:
+      APP_WORKING_DIRECTORY: ./  
 
-  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #       working-directory: ${{ env.APP_WORKING_DIRECTORY }}
-  #   steps:
-  #   - name: Login via Azure CLI
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{ secrets.AZ_KHAOS_ETH_MAINNET_CREDENTIALS }}
-  #   - name: Azure Functions Action
-  #     uses: Azure/functions-action@v1.1.5
-  #     with:
-  #       # Name of the Azure Function App
-  #       app-name: joreynes094382
-  #       # Path to package or folder. *.zip or a folder to deploy
-  #       package: # optional, default is .
-  #       # Function app slot to be deploy to
-  #       slot-name: # optional
-  #       # Publish profile (*.publishsettings) file contents with web deploy secrets
-  #       publish-profile: # optional
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.APP_WORKING_DIRECTORY }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # - name: Set Node.js 12.x
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: 12.x
+
+    # - name: Install
+    #   run: npm clean-install
+    
+    # - name: Verify
+    #   if: runner.os == 'Linux'
+    #   run: |
+    #     npm run build
+    #     # Fail if "npm run build" generated new changes in dist
+    #     git update-index --refresh dist/* && git diff-index --quiet HEAD dist
+
+    # - name: Test
+    #   run: npm test
+
+    # - name: Lint
+    #   run: npm run lint
+
+    # - name: Format
+    #   run: npm run format-check
+
+    - name: Upload artifact NPM package
+      uses: actions/upload-artifact@v1
+      with:
+        name: node-package
+        path: ./dummy/dummy.txt
+
+    - name: Download artifact NPM package
+      uses: actions/download-artifact@v2
+      with:
+        name: node-package
+        path: .
+        
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: .
+
+    - name: Login via Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURERM_SPN }}
+
+    - name: Azure Functions Action
+      uses: Azure/functions-action@v1.1.5
+      with:
+        # Name of the Azure Function App
+        app-name: joreynes094382
+        # Path to package or folder. *.zip or a folder to deploy
+        # package: # optional, default is .
+        # Function app slot to be deploy to
+        # slot-name: # optional
+        # Publish profile (*.publishsettings) file contents with web deploy secrets
+        # publish-profile: # optional
+
+# https://github.com/actions/download-artifact/blob/main/.github/workflows/test.yml
