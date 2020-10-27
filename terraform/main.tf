@@ -241,7 +241,7 @@ resource "azurerm_function_app" "this" {
 resource "azurerm_app_service_virtual_network_swift_connection" "this" {
   for_each = var.vnet_swift_connection
   # app_service_id = lookup(azurerm_function_app.this, each.value.function_app_key)["id"]
-  app_service_id = "/subscriptions/d8656ecf-9955-40f8-9561-adc129f66e3c/resourceGroups/kvapp/providers/Microsoft.Web/serverfarms/jstart-functionapp"
+  app_service_id = "/subscriptions/d8656ecf-9955-40f8-9561-adc129f66e3c/resourceGroups/kvapp/providers/Microsoft.Web/sites/joreynes094382"
   # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
   subnet_id = azurerm_subnet.this.id
 }
