@@ -131,7 +131,7 @@ resource "azurerm_function_app" "this" {
   # location                   = local.resourcegroup_state_exists == true ? lookup(data.terraform_remote_state.resourcegroup.outputs.resource_group_locations_map, var.resource_group_name) : data.azurerm_resource_group.this.0.location
   # resource_group_name        = local.resourcegroup_state_exists == true ? var.resource_group_name : data.azurerm_resource_group.this.0.name
   resource_group_name        = azurerm_resource_group.this.name
-  app_service_plan_id        = lookup(merge(azurerm_app_service_plan.this, data.azurerm_app_service_plan.this), each.value["app_service_plan_key"])["id"]
+  app_service_plan_id        = lookup(azurerm_app_service_plan.this, each.value["app_service_plan_key"])["id"]
   storage_account_name       = each.value["storage_account_name"]
   storage_account_access_key = azurerm_storage_account.this.primary_access_key
   # storage_account_access_key = local.storage_state_exists == true ? lookup(data.terraform_remote_state.storage.outputs.primary_access_keys_map, each.value["storage_account_name"]) : lookup(data.azurerm_storage_account.this, each.key)["primary_access_key"]
