@@ -92,54 +92,25 @@ jobs:
     needs: terraform
     runs-on: ubuntu-latest
     env:
-      APP_WORKING_DIRECTORY: ./  
+      APP_WORKING_DIRECTORY: ./
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ env.APP_WORKING_DIRECTORY }}
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Set Node.js 12.x
-      uses: actions/setup-node@v1
+    - name: Validate Build Artifact
+      uses: xembly/validate-workflow-status@v1
       with:
-        node-version: 12.x
-
-    - name: Install
-      run: npm clean-install
-    
-    - name: Verify
-      if: runner.os == 'Linux'
-      run: |
-        npm run build
-
-    # - name: Test
-    #   run: npm test
-
-    # - name: Lint
-    #   run: npm run lint
-
-    # - name: Format
-    #   run: npm run format-check
-
-    - name: Upload artifact NPM package
-      uses: actions/upload-artifact@v1
-      with:
-        name: node-package
-        path: ./dist
+        token: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Github Actions, you do not need to create your own token
+        workflow: continuous_integration
+        branch: main     #optional
+        status: success  # optional
 
     - name: Download artifact NPM package
       uses: actions/download-artifact@v2
       with:
         name: node-package
-        path: ./build/node
+        path: ./build/dist
         
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: .
+      working-directory: ./build/dist
 
     - name: Login via Azure CLI
       uses: azure/login@v1
@@ -156,3 +127,5 @@ jobs:
         # slot-name: # optional
         # Publish profile (*.publishsettings) file contents with web deploy secrets
         # publish-profile: # optional
+
+        
