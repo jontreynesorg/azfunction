@@ -1,10 +1,10 @@
 name: 'continuous_integration'
 
 on:
-  push:
-    branches:
-    - main
-    - users/**
+  # push:
+  #   branches:
+  #   - main
+  #   - users/**
   pull_request:
     branches:
       - main
