@@ -1,7 +1,6 @@
 name: 'continuous_deployment'
 
 on:
-on:
   push:
     branches:
       - main
