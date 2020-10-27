@@ -253,4 +253,3 @@ resource "azurerm_app_service_virtual_network_swift_connection" "this" {
   # subnet_id      = local.networking_state_exists == true ? lookup(data.terraform_remote_state.networking.outputs.map_subnet_ids, each.value.subnet_name) : lookup(data.azurerm_subnet.this, each.key)["id"]
   subnet_id = azurerm_subnet.this.id
 }
-# keep getting ^ error creating/updating App Service VNet association between "joreynes094382" (Resource Group "kvapp") and Virtual Network "myvnet": web.AppsClient#CreateOrUpdateSwiftVirtualNetworkConnection: Failure responding to request: StatusCode=500 -- Original Error: autorest/azure: Service returned an error. Status=500 Code="" Message="An error has occurred."
