@@ -93,14 +93,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Validate Build Artifact
-    #   uses: xembly/validate-workflow-status@v1
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     workflow: continuous_integration
-    #     branch: main     #optional
-    #     status: success  # optional
-
     - name: Wait for Continuous Integration to Succeed
       uses: fountainhead/action-wait-for-check@v1.0.0
       id: wait-for-build
@@ -140,4 +132,3 @@ jobs:
         package: ./build
         # slot-name: # optional
         # Publish profile (*.publishsettings) file contents with web deploy secrets
-        # here's a change
